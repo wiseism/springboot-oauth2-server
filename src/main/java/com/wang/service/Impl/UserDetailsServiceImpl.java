@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity userEntity= iUserService.findByname(username);
-		String name = userEntity.getName();
+		String name = userEntity.getUsername();
 		String password = userEntity.getPassword();
 		List<Authority> authorities = new ArrayList<Authority>();
 		authorities.add(new Authority(1L, "ROLE_ADMIN"));

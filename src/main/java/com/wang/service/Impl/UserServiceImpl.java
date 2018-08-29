@@ -1,6 +1,6 @@
 package com.wang.service.Impl;
 
-import com.wang.dao.UserDao;
+import com.wang.dao.UserEntityDao;
 import com.wang.domain.UserEntity;
 import com.wang.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements IUserService {
     @Autowired
-    private UserDao userDao;
-    @Override
-    public UserEntity findUserBy(int id) {
-        return userDao.findOne(id);
-    }
+    private UserEntityDao userDao;
 
     @Override
     public UserEntity findByname(String username) {
-        return userDao.findByname(username) ;
+        return userDao.findByUsername(username) ;
     }
 }

@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "user", schema = "oauth2", catalog = "")
 public class UserEntity {
     private int id;
-    private String name;
+    private String username;
     private String password;
     private Integer age;
     private String mark;
@@ -25,15 +25,15 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
     }
-
-    public void setName(String name) {
-        this.name = name;
+    
+    public void setUsername(String username) {
+        this.username = username;
     }
-
+    
     @Basic
     @Column(name = "age")
     public Integer getAge() {

@@ -6,7 +6,6 @@ import com.wang.domain.UserEntity;
  * Created by Administrator on 2017/2/11 0011.
  */
 public interface IUserService {
-    UserEntity findUserBy(int id);
 
     UserEntity findByname(String username);
 }
