@@ -3,6 +3,11 @@ package com.wang.config;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.access.AccessPermissionManager;
 import org.springframework.security.oauth2.provider.access.Permission;
@@ -24,10 +29,15 @@ import java.util.List;
 public class JdbcAccessPermissionManager implements AccessPermissionManager {
 
     private final JdbcTemplate jdbcTemplate;
+    private ClientDetailsService clientDetailsService;
 
     public JdbcAccessPermissionManager(DataSource dataSource) {
         Assert.notNull(dataSource, "DataSource required");
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public void setClientDetailsService(ClientDetailsService clientDetailsService) {
+        this.clientDetailsService = clientDetailsService;
     }
 
     @Override
@@ -74,14 +84,22 @@ public class JdbcAccessPermissionManager implements AccessPermissionManager {
 
     @Override
     public boolean checkPermission(Authentication httpAuth, Authentication auth2) {
-        //检查是不是用户登录 如果是客户端登陆就不行了
+        Object object = httpAuth.getCredentials();
+        //客户端登陆
         if (auth2 instanceof OAuth2Authentication) {
             OAuth2Authentication auth2Authentication = (OAuth2Authentication) auth2;
             if (auth2Authentication.getUserAuthentication() == null) {
-                return false;
+                Boolean matchFlag = checkClientPermisson((HttpServletRequest) object, auth2Authentication);
+                return matchFlag;
+            } else {
+                return checkUserPermission(auth2, object);
             }
         }
-        Object object = httpAuth.getCredentials();
+
+        return false;
+    }
+
+    private boolean checkUserPermission(Authentication auth2, Object object) {
         if (object instanceof HttpServletRequest) {
             HttpServletRequest request = (HttpServletRequest) object;
             final String URI = request.getRequestURI();
@@ -103,6 +121,24 @@ public class JdbcAccessPermissionManager implements AccessPermissionManager {
                     }
                 }
             }
+        }
+        return false;
+    }
+
+    private Boolean checkClientPermisson(HttpServletRequest object, OAuth2Authentication auth2Authentication) {
+        ClientDetails client;
+        try {
+            client = clientDetailsService.loadClientByClientId(auth2Authentication.getOAuth2Request().getClientId());
+        } catch (ClientRegistrationException e) {
+            throw new OAuth2AccessDeniedException("Invalid token contains invalid client id");
+        }
+
+        HttpServletRequest request = object;
+        final String URI = request.getRequestURI();
+        PathMatcher matcher = new AntPathMatcher();
+        for (GrantedAuthority grantedAuthority : client.getAuthorities()) {
+            String patternURL = grantedAuthority.getAuthority();
+            return matcher.match(patternURL, URI);
         }
         return false;
     }

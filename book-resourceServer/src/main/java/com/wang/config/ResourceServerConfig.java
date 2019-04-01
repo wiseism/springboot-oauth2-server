@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationManager;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
@@ -37,7 +38,9 @@ public class ResourceServerConfig {
             public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
                 TokenStore tokenStore = new JdbcTokenStore(dataSource);
                 OAuth2AuthenticationManager auth2AuthenticationManager = new OAuth2AuthenticationManager();
-                auth2AuthenticationManager.setAccessPermissionManager(new JdbcAccessPermissionManager(dataSource));
+                JdbcAccessPermissionManager jdbcAccessPermissionManager=    new JdbcAccessPermissionManager(dataSource);
+                jdbcAccessPermissionManager.setClientDetailsService(new JdbcClientDetailsService(dataSource));
+                auth2AuthenticationManager.setAccessPermissionManager(jdbcAccessPermissionManager);
                 resources.authenticationManager(auth2AuthenticationManager);
                 resources.resourceId("book-service").tokenStore(tokenStore).stateless(true);
             }
