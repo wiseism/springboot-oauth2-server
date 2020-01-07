@@ -47,8 +47,7 @@ public class ResourceServerConfig {
 
             @Override
             public void configure(HttpSecurity http) throws Exception {
-                http.authorizeRequests().antMatchers("/**")
-                        .permitAll().and().authorizeRequests().
+                http.authorizeRequests().
                         anyRequest().authenticated();
                 http.cors().and().csrf().disable();
             }

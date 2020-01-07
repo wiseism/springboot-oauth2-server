@@ -8,6 +8,7 @@
     <modules>
         <module>book-authorizationServer</module>
         <module>book-resourceServer</module>
+        <module>thirdParty-Server</module>
     </modules>
     <packaging>pom</packaging>
 
