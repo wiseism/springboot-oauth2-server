@@ -1,4 +1,4 @@
-package com.wang.controller;
+package com.wang.api;
 
 import com.wang.domain.OauthClientDetailsEntity;
 import com.wang.service.IClientDetailsService;

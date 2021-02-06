@@ -25,60 +25,13 @@ public class ResourceServerConfig {
     @Autowired
     private DataSource dataSource;
 
+    /**
+     * 配置卖书的资源服务器
+     *
+     * @return
+     */
     @Bean
-    protected ResourceServerConfiguration BataResources() {
-
-        ResourceServerConfiguration resource =  new ResourceServerConfiguration() {
-            // Switch off the Spring Boot @Autowired configurers
-            public void setConfigurers(List<ResourceServerConfigurer> configurers) {
-                super.setConfigurers(configurers);
-            }
-        };
-
-        resource.setConfigurers(Arrays.<ResourceServerConfigurer>asList(new ResourceServerConfigurerAdapter() {
-
-            @Override
-            public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-                TokenStore tokenStore = new JdbcTokenStore(dataSource);
-                resources.resourceId("bata-services").tokenStore(tokenStore).stateless(true);
-            }
-
-            @Override
-            public void configure(HttpSecurity http) throws Exception {
-                http
-                        .sessionManagement()
-                        .sessionCreationPolicy(SessionCreationPolicy.NEVER)
-                        .and()
-                        .requestMatchers().antMatchers("/bata/**")
-                        .and()
-                        .authorizeRequests()
-                        .antMatchers(HttpMethod.GET, "/bata/**").access("#oauth2.hasScope('read')")
-                        .antMatchers(HttpMethod.POST, "/bata/**").access("#oauth2.hasScope('write')")
-                        .antMatchers(HttpMethod.PATCH, "/bata/**").access("#oauth2.hasScope('write')")
-                        .antMatchers(HttpMethod.PUT, "/bata/**").access("#oauth2.hasScope('write')")
-                        .antMatchers(HttpMethod.DELETE, "/bata/**").access("#oauth2.hasScope('write')")
-                        .and()
-                        .headers().addHeaderWriter(new HeaderWriter() {
-                    @Override
-                    public void writeHeaders(HttpServletRequest request, HttpServletResponse response) {
-                        response.addHeader("Access-Control-Allow-Origin", "*");
-                        if (request.getMethod().equals("OPTIONS")) {
-                            response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));
-                            response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
-                        }
-                    }
-                });
-            }
-
-        }));
-        resource.setOrder(3);
-
-        return resource;
-
-    }
-
-    @Bean
-    protected ResourceServerConfiguration UserResources() {
+    protected ResourceServerConfiguration BookResources() {
 
         ResourceServerConfiguration resource = new ResourceServerConfiguration() {
             // Switch off the Spring Boot @Autowired configurers
@@ -92,34 +45,51 @@ public class ResourceServerConfig {
             @Override
             public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
                 TokenStore tokenStore = new JdbcTokenStore(dataSource);
-                resources.resourceId("user-services").tokenStore(tokenStore).stateless(true);
+                resources.resourceId("book").tokenStore(tokenStore).stateless(true);
             }
 
             @Override
             public void configure(HttpSecurity http) throws Exception {
-                http
-                        .sessionManagement()
-                        .sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                http.authorizeRequests().anyRequest().authenticated()
                         .and()
-                        .requestMatchers().antMatchers("/user/**")
+                        .requestMatchers().antMatchers("/book/**");;
+            }
+
+        }));
+        resource.setOrder(3);
+
+        return resource;
+
+    }
+
+    /**
+     * 配置卖鸡蛋的资源服务器
+     *
+     * @return
+     */
+    @Bean
+    protected ResourceServerConfiguration EggResources() {
+
+        ResourceServerConfiguration resource = new ResourceServerConfiguration() {
+            // Switch off the Spring Boot @Autowired configurers
+            public void setConfigurers(List<ResourceServerConfigurer> configurers) {
+                super.setConfigurers(configurers);
+            }
+        };
+
+        resource.setConfigurers(Arrays.<ResourceServerConfigurer>asList(new ResourceServerConfigurerAdapter() {
+
+            @Override
+            public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+                TokenStore tokenStore = new JdbcTokenStore(dataSource);
+                resources.resourceId("egg").tokenStore(tokenStore).stateless(true);
+            }
+
+            @Override
+            public void configure(HttpSecurity http) throws Exception {
+                http.authorizeRequests().anyRequest().authenticated()
                         .and()
-                        .authorizeRequests()
-                        .antMatchers(HttpMethod.GET, "/user/**").access("#oauth2.hasScope('read')")
-                        .antMatchers(HttpMethod.POST, "/user/**").access("#oauth2.hasScope('write')")
-                        .antMatchers(HttpMethod.PATCH, "/user/**").access("#oauth2.hasScope('write')")
-                        .antMatchers(HttpMethod.PUT, "/user/**").access("#oauth2.hasScope('write')")
-                        .antMatchers(HttpMethod.DELETE, "/user/**").access("#oauth2.hasScope('write')")
-                        .and()
-                        .headers().addHeaderWriter(new HeaderWriter() {
-                    @Override
-                    public void writeHeaders(HttpServletRequest request, HttpServletResponse response) {
-                        response.addHeader("Access-Control-Allow-Origin", "*");
-                        if (request.getMethod().equals("OPTIONS")) {
-                            response.setHeader("Access-Control-Allow-Methods", request.getHeader("Access-Control-Request-Method"));
-                            response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
-                        }
-                    }
-                });
+                        .requestMatchers().antMatchers("/egg/**");
             }
 
         }));
