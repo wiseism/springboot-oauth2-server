@@ -19,10 +19,13 @@ http://localhost:9000/oauth/authorize?response_type=code&scope=read write&client
 * 是否允许
 * 返回code
 ![登录页面](https://images.gitee.com/uploads/images/2021/0603/153654_c67b9ef0_1078728.png "屏幕截图.png")
-```
+![授权页面](https://images.gitee.com/uploads/images/2021/0603/154443_e90b2832_1078728.png "屏幕截图.png")
 * 登录后返回code 码用来获取token
+
+```
 http://www.baidu.com/?code=kG4F2N&state=b375bc2b-25f7-4dce-9b36-5f9e2d20bda1
 ```
+![返回code码](https://images.gitee.com/uploads/images/2021/0603/154511_f3940060_1078728.png "屏幕截图.png")
 * 申请access_token
 ```
 curl -X POST http://localhost:8080/oauth/token -H "Accept: application/json" -d "client_id=curl-client&client_secret=client-secret&grant_type=authorization_code&code=kG4F2N&redirect_uri=http://www.baidu.com"
