@@ -1,5 +1,5 @@
 # Spring Boot Oauth2-master
-
+ **数据库脚本在项目中** 
 Oauth2支持的授权方式目前有5类
 
 | **GRANT_TYPE** | **Description** |
