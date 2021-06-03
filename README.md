@@ -26,14 +26,15 @@ http://localhost:9000/oauth/authorize?response_type=code&scope=read write&client
 http://www.baidu.com/?code=kG4F2N&state=b375bc2b-25f7-4dce-9b36-5f9e2d20bda1
 ```
 ![返回code码](https://images.gitee.com/uploads/images/2021/0603/154511_f3940060_1078728.png "屏幕截图.png")
-* 申请access_token
+* 申请access_token（post请求）
 ```
-curl -X POST http://localhost:8080/oauth/token -H "Accept: application/json" -d "client_id=curl-client&client_secret=client-secret&grant_type=authorization_code&code=kG4F2N&redirect_uri=http://www.baidu.com"
+http://localhost:9000/oauth/token?client_id=book&client_secret=book&grant_type=authorization_code&code=nFXYw1&redirect_uri=http://www.baidu.com
 ```
 * 返回access_token
 ```
 {"access_token":"30626e87-761f-410c-9497-84b29d310dd7","token_type":"bearer","refresh_token":"0843fbec-20e3-4802-93a0-357488403924","expires_in":29,"scope":"read write"}
 ```
+
 * 请求资源
 ```
 curl http://localhost:8080/user/ping -H "Authorization: Bearer 30626e87-761f-410c-9497-84b29d310dd7"
