@@ -43,7 +43,7 @@ curl http://localhost:8000/book/classical -H "Authorization: Bearer 30626e87-761
 ## 2. password
 * 申请access_token
 ```
-curl -X POST http://localhost:8080/oauth/token -H "Accept: application/json" -d "grant_type=password&scope=read%20write&client_id=curl-client&client_secret=client-secret&username=nangzi&password=nangzi"
+curl -X POST http://localhost:9000/oauth/token -H "Accept: application/json" -d "grant_type=password&scope=read%20write&client_id=curl-client&client_secret=client-secret&username=nangzi&password=nangzi"
 ```
 ![password获取token](https://images.gitee.com/uploads/images/2021/0603/154855_b6b9c392_1078728.png "屏幕截图.png")
 * 返回access_token
@@ -58,7 +58,7 @@ curl http://localhost:8000/book/classical-H "Authorization: Bearer 9ac3fe0f-f380
 ## 3. client_credentials
 * 申请access_token
 ```
-curl -X POST http://localhost:8080/oauth/token -H "Accept: application/json" -d "grant_type=client_credentials&scope=read%20write&client_id=curl-client&client_secret=client-secret"
+curl -X POST http://localhost:9000/oauth/token -H "Accept: application/json" -d "grant_type=client_credentials&scope=read%20write&client_id=curl-client&client_secret=client-secret"
 ```
 ![client_credential获取token](https://images.gitee.com/uploads/images/2021/0603/154939_9d4f7fd3_1078728.png "屏幕截图.png")
 * 返回access_token
@@ -85,13 +85,13 @@ http://www.baidu.com/#access_token=aa7779b0-b98e-4739-b0d7-922a811ed134&token_ty
 ```
 * 请求资源
 ```
-curl http://localhost:8080/user/ping -H "Authorization: Bearer aa7779b0-b98e-4739-b0d7-922a811ed134"
+curl http://localhost:8000/book/classical -H "Authorization: Bearer aa7779b0-b98e-4739-b0d7-922a811ed134"
 ```
 
 ## 5. refresh_token
 * 请求refresh_token
 ```
-curl -X POST http://localhost:8080/oauth/token -H "Accept: application/json" -d "grant_type=refresh_token&refresh_token=0843fbec-20e3-4802-93a0-357488403924&client_id=curl-client&client_secret=client-secret"
+curl -X POST http://localhost:9000/oauth/token -H "Accept: application/json" -d "grant_type=refresh_token&refresh_token=0843fbec-20e3-4802-93a0-357488403924&client_id=curl-client&client_secret=client-secret"
 ```
 * 返回access_token
 ```
