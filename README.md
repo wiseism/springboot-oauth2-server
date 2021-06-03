@@ -9,7 +9,7 @@ Oauth2支持的授权方式目前有5类
 |client_credentials|客户端模式(无用户，用户向客户端注册，然后客户端以自己的名义向'服务端'获取资源)   |
 |implicit          |简化模式(在redirect_uri的Hash传递token，客户端运行在浏览器中，如JS、Flash)    |
 |refresh_token     |更新access_token                                                          |
-[调试参数文档](https://docs.apipost.cn/preview/270483153cc63a0f/3a98e8f82135eb25)|  **强烈建议点开，里面参数好的文档和接口参数** 
+[调试参数文档](https://docs.apipost.cn/preview/270483153cc63a0f/3a98e8f82135eb25)|  **点击调试参数文档 可直接调试--强烈建议点开，里面参数好的文档和接口参数** 
 
 ## 1. authorization_code
 * 使用浏览器复制下面链接->申请code
