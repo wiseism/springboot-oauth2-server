@@ -15,11 +15,12 @@ Oauth2支持的授权方式目前有5类
 ```
 http://localhost:9000/oauth/authorize?response_type=code&scope=read write&client_id=book&redirect_uri=http://www.baidu.com&state=b375bc2b-25f7-4dce-9b36-5f9e2d20bda1
 ```
-* 进入权限选择页面登录
+* 进入权限选择页面登录 用户名 wang  密码 wang
 * 是否允许
 * 返回code
 ![登录页面](https://images.gitee.com/uploads/images/2021/0603/153654_c67b9ef0_1078728.png "屏幕截图.png")
 ```
+* 登录后返回code 码用来获取token
 http://www.baidu.com/?code=kG4F2N&state=b375bc2b-25f7-4dce-9b36-5f9e2d20bda1
 ```
 * 申请access_token
