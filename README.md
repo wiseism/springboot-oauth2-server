@@ -11,11 +11,12 @@ Oauth2支持的授权方式目前有5类
 |refresh_token     |更新access_token                                                          |
 
 ## 1. authorization_code
-* 申请code
+* 使用浏览器复制下面链接->申请code
 ```
-http://localhost:8080/oauth/authorize?response_type=code&scope=read write&client_id=curl-client&redirect_uri=http://www.baidu.com&state=b375bc2b-25f7-4dce-9b36-5f9e2d20bda1
+http://localhost:9000/oauth/authorize?response_type=code&scope=read write&
+client_id=book&redirect_uri=http://www.baidu.com&state=b375bc2b-25f7-4dce-9b36-5f9e2d20bda1
 ```
-* 登录
+* 进入权限选择页面登
 * 是否允许
 * 返回code
 ```
